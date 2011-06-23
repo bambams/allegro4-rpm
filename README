@@ -39,3 +39,15 @@ Or, just execute the included init.sh script, which will do all
 of these things for you. I've tried to make it as smart and safe as
 possible, but it might still do "damage" so USE AT OWN RISK.
 
+== Known Issues ==
+
+I haven't figured out how to handle documentation yet. My attempts to
+install the info documentation failed, and even my attempts to install
+simple files like AUTHORS and THANKS have failed. I'm still somewhat new
+to packaging so I still have to figure this stuff out. :P
+
+Additionally, I'm not sure about what is considered a plugin yet, so there
+are no plugin subpackages yet. I did notice a plugins.txt or something in
+the source so I imagine that will help, and presumably the upstream devs
+can offer the rest of the guidance. :)
+
