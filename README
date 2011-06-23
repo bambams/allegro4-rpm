@@ -1,0 +1,41 @@
+This project is intended to provide and maintain an RPM package for
+version 4 of the Allegro game programming library. It is a WIP for now and
+doesn't actually work yet. :) There may also be other efforts to do this
+too (update 'allegro' in Fedora to 4.4.x), in which case this project will
+probably be promptly rm -fR'd. ;)
+
+== The RPM ==
+
+The way that I'm currently organizing this:
+
+Use rpmdev-setuptree to create your ~/rpm tree if you haven't already:
+
+  $ rpmdev-setuptree
+
+This should leave you with the following directories in ~/rpm:
+
+BUILD
+RPMS
+SOURCES
+SPECS
+SRPMS
+
+Clone this repository to where ever you wish to work on it. I've
+personally got the Allegro source checked out into
+~/src/allegro/${version}, so I've created this repository right next to
+that: ~/src/allegro/rpm.
+
+Then, create an absolute path symbolic link from any .spec files in the
+repository to the SPECS directory of your ~/rpm:
+
+  $ for f in ~/src/allegro/rpm/*.spec; do
+      ln -s $f ~/rpm/SPECS/$(basename $f);
+    done
+
+Download the source tarball for Allegro and stick it in the ~/rpm/SOURCES
+directory.
+
+Or, just execute the included init.sh script, which will do all
+of these things for you. I've tried to make it as smart and safe as
+possible, but it might still do "damage" so USE AT OWN RISK.
+
