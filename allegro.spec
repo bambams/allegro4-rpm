@@ -1,6 +1,8 @@
+# vim: noexpandtab textwidth=74
 Name:           allegro
-Version:        4.2.3
-Release:        5%{?dist}
+Version:        4.4.2
+Release:        1%{?dist}
+Summary:        A game programming library
 
 Summary:        A game programming library
 Summary(es):    Una libreria de programacion de juegos
@@ -11,26 +13,8 @@ Summary(cs):    Knihovna pro programování her
 Group:          System Environment/Libraries
 License:        Giftware
 URL:            http://alleg.sourceforge.net/
-Source:         http://downloads.sourceforge.net/alleg/allegro-%{version}.tar.gz
-Patch1:         allegro-4.0.3-cfg.patch
-Patch2:         allegro-4.2.0-nostrip.patch
-Patch3:         allegro-4.2.0-noexecstack.patch
-Patch4:         allegro-4.2.0-multilib.patch
-Patch5:         allegro-4.2.1-noexecmod.patch
-Patch6:         allegro-4.0.3-libdir.patch
-Patch7:         allegro-4.2.2-fullscreen-viewport.patch
-Patch8:         allegro-4.2.3-make.patch
-Patch9:         allegro-4.2.3-pack-formatstring.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  esound-devel, texinfo, perl, arts-devel, glib2-devel
-BuildRequires:  xorg-x11-proto-devel, libX11-devel, libXext-devel, libXt-devel
-BuildRequires:  libXpm-devel, libXcursor-devel, libXxf86vm-devel
-BuildRequires:  libXxf86dga-devel, jack-audio-connection-kit-devel, autoconf
-Requires:       timidity++-patches
-%ifarch %{ix86}
-Requires(post): policycoreutils /sbin/ldconfig
-Requires(postun): policycoreutils /sbin/ldconfig
-%endif
+Source0:        http://downloads.sourceforge.net/alleg/allegro-%{version}.tar.gz
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %description
 Allegro is a cross-platform library intended for use in computer games
@@ -127,152 +111,48 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček obsahuje přídavné nástroje,
 které jsou užitečné pro vývoj Allegro programů.
 
-%package esound-plugin
-Summary:        Allegro Enlightened Sound Daemon plugin
-Group:          System Environment/Libraries
-Requires:       %{name} = %{version}-%{release}
-
-%description esound-plugin
-This package contains a plugin for Allegro which enables Allegro to playback
-sound through the Enlightened Sound Daemon (ESD / esound).
-
-%package arts-plugin
-Summary:        Allegro aRts (analog realtime synthesizer) plugin
-Group:          System Environment/Libraries
-Requires:       %{name} = %{version}-%{release}
-
-%description arts-plugin
-This package contains a plugin for Allegro which enables Allegro to playback
-sound through aRts (analog realtime synthesizer).
-
-%package jack-plugin
-Summary:        Allegro JACK (Jack Audio Connection Kit) plugin
-Group:          System Environment/Libraries
-Requires:       %{name} = %{version}-%{release}
-
-%description jack-plugin
-This package contains a plugin for Allegro which enables Allegro to playback
-sound through JACK (Jack Audio Connection Kit).
-
-
 %prep
-%setup -q
-%patch1 -p1 -b .config
-%patch2 -p1 -z .nostrip
-%patch3 -p1 -z .noexecstack
-%patch4 -p1 -z .multilib
-%patch5 -p1 -z .noexecmod
-%patch6 -p1 -z .multilib2
-%patch7 -p1 -z .fs-viewport
-%patch8 -p1
-%patch9 -p1
-iconv -f iso-8859-1 -t utf-8 docs/src/allegro._tx > docs/src/allegro._tx.tmp
-mv docs/src/allegro._tx.tmp docs/src/allegro._tx
-
+%setup -n allegro-%{version} -q
 
 %build
-%configure \
-%ifnarch %{ix86}
-  --enable-vga=no --enable-vbeaf=no \
-%endif
-  --enable-svgalib=no \
-  --enable-dbglib=yes \
-  --enable-proflib=yes \
-  --enable-opts=generic
-# GRRR configure insists on adding -fomit-frame-pointer, remove it
-sed -i 's/-fomit-frame-pointer//g' makefile
-# Explicitly set PROG_LDFLAGS to avoid stripping of the utilities
-make CFLAGS="$RPM_OPT_FLAGS" PROG_LDFLAGS="-Wl,--export-dynamic"
-
+mkdir build
+cd build
+%cmake ..
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install install-man install-info \
-  DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true
-install -m 755 docs/makedoc $RPM_BUILD_ROOT%{_bindir}/allegro-makedoc
-install -Dpm 644 allegro.cfg $RPM_BUILD_ROOT%{_sysconfdir}/allegrorc
-install -dm 755 $RPM_BUILD_ROOT%{_datadir}/allegro
-install -pm 644 keyboard.dat language.dat $RPM_BUILD_ROOT%{_datadir}/allegro
-find demo examples setup -type f -perm +111 -print | xargs rm
-chmod 755 `find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.so"`
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm -f $RPM_BUILD_ROOT%{_libdir}/liball{p,d}_unsharable.a
+cd build
+make install DESTDIR=$RPM_BUILD_ROOT
+mkdir %buildroot/%{_sysconfdir}
 
-
-%ifarch %{ix86}
-%post
-/sbin/ldconfig   
-# Set SELinux file_context for vga plugin in the policy
-semanage fcontext -a -t textrel_shlib_t \
-  '%{_libdir}/allegro/4\.2\.2/alleg-vga\.so' 2>/dev/null || :
-# Actually change the context
-chcon -t textrel_shlib_t %{_libdir}/allegro/%{version}/alleg-vga.so \
-  2> /dev/null || :
-%else
 %post -p /sbin/ldconfig
-%endif
 
-%ifarch %{ix86}
-%postun
-/sbin/ldconfig
-# SELinux support
-if [ $1 -eq 0 ]; then  # final removal
-  semanage fcontext -d -t textrel_shlib_t \
-    '%{_libdir}/allegro/4\.2\.2/alleg-vga\.so' 2>/dev/null || :
-fi
-%else 
-%postun -p /sbin/ldconfig 
-%endif
-
-%post devel
-/sbin/install-info %{_infodir}/allegro.info %{_infodir}/dir 2>/dev/null || :
-
-%preun devel
-if [ $1 -eq 0 ] ; then
-  /sbin/install-info --delete %{_infodir}/allegro.info %{_infodir}/dir \
-    2>/dev/null || :
-fi
-
+%postun -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
-%defattr(-,root,root,-)
-%doc readme.txt docs/build/unix.txt docs/build/linux.txt
-%doc AUTHORS CHANGES THANKS
-%config(noreplace) %{_sysconfdir}/allegrorc
-%{_libdir}/liballeg*.so*
-%{_libdir}/allegro
-%{_datadir}/allegro
-%exclude %{_libdir}/allegro/%{version}/alleg-esddigi.so
-%exclude %{_libdir}/allegro/%{version}/alleg-artsdigi.so
-%exclude %{_libdir}/allegro/%{version}/alleg-jackdigi.so
-
-%files devel
-%defattr(-,root,root,-)
-%doc docs/txt/abi.txt docs/txt/ahack.txt docs/txt/allegro.txt
-%doc docs/txt/const.txt docs/txt/faq.txt docs/txt/help.txt
-%doc todo.txt docs/html
-%doc demo examples setup
+%doc AUTHORS CHANGES THANKS abi.txt addons.txt ahack.txt allegro.txt api.txt const.txt dat.txt dat2c.txt dat2s.txt datafile.txt faq.txt grabber.txt help.txt license.txt makedoc.txt mistakes.txt packfile.txt readme.txt
 %{_bindir}/allegro-config
-%{_bindir}/allegro-makedoc
-%{_libdir}/liballeg_unsharable.a
-%{_libdir}/liball?.so.*
-%{_libdir}/liball?-%{version}.so
-%{_includedir}/*alleg*
-%{_infodir}/allegro.info*
-%{_mandir}/man3/*
-%{_datadir}/aclocal/allegro.m4
+#%{_infodir}/allegro.info.gz
+%{_libdir}/allegro/4.4.2/modules.lst
+%{_libdir}/liballeg.so
+%{_libdir}/liballeg.so.4.4
+%{_libdir}/liballeg.so.4.4.2
+%{_libdir}/libjpgalleg.a
+%{_libdir}/pkgconfig/allegro.pc
+%{_libdir}/pkgconfig/allegrogl.pc
+%{_libdir}/pkgconfig/jpgalleg.pc
+%{_libdir}/pkgconfig/loadpng.pc
+%{_libdir}/pkgconfig/logg.pc
 
 %files tools
-%defattr(-,root,root,-)
-%doc tools/plugins/plugins.txt
 %{_bindir}/colormap
 %{_bindir}/dat
-%{_bindir}/dat2s
 %{_bindir}/dat2c
+%{_bindir}/dat2s
 %{_bindir}/exedat
 %{_bindir}/grabber
 %{_bindir}/pack
@@ -280,20 +160,99 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rgbmap
 %{_bindir}/textconv
 
-%files esound-plugin
-%defattr(-,root,root,-)
-%{_libdir}/allegro/%{version}/alleg-esddigi.so
-
-%files arts-plugin
-%defattr(-,root,root,-)
-%{_libdir}/allegro/%{version}/alleg-artsdigi.so
-
-%files jack-plugin
-%defattr(-,root,root,-)
-%{_libdir}/allegro/%{version}/alleg-jackdigi.so
-
+%files devel
+%{_includedir}/allegro.h
+%{_includedir}/allegro/3d.h
+%{_includedir}/allegro/3dmaths.h
+%{_includedir}/allegro/alcompat.h
+%{_includedir}/allegro/alinline.h
+%{_includedir}/allegro/base.h
+%{_includedir}/allegro/color.h
+%{_includedir}/allegro/compiled.h
+%{_includedir}/allegro/config.h
+%{_includedir}/allegro/datafile.h
+%{_includedir}/allegro/debug.h
+%{_includedir}/allegro/digi.h
+%{_includedir}/allegro/draw.h
+%{_includedir}/allegro/file.h
+%{_includedir}/allegro/fix.h
+%{_includedir}/allegro/fixed.h
+%{_includedir}/allegro/fli.h
+%{_includedir}/allegro/fmaths.h
+%{_includedir}/allegro/font.h
+%{_includedir}/allegro/gfx.h
+%{_includedir}/allegro/graphics.h
+%{_includedir}/allegro/gui.h
+%{_includedir}/allegro/inline/3dmaths.inl
+%{_includedir}/allegro/inline/asm.inl
+%{_includedir}/allegro/inline/color.inl
+%{_includedir}/allegro/inline/draw.inl
+%{_includedir}/allegro/inline/fix.inl
+%{_includedir}/allegro/inline/fmaths.inl
+%{_includedir}/allegro/inline/gfx.inl
+%{_includedir}/allegro/inline/matrix.inl
+%{_includedir}/allegro/inline/rle.inl
+%{_includedir}/allegro/inline/system.inl
+%{_includedir}/allegro/internal/aintern.h
+%{_includedir}/allegro/internal/aintvga.h
+%{_includedir}/allegro/internal/alconfig.h
+%{_includedir}/allegro/joystick.h
+%{_includedir}/allegro/keyboard.h
+%{_includedir}/allegro/lzss.h
+%{_includedir}/allegro/matrix.h
+%{_includedir}/allegro/midi.h
+%{_includedir}/allegro/mouse.h
+%{_includedir}/allegro/palette.h
+%{_includedir}/allegro/platform/aintbeos.h
+%{_includedir}/allegro/platform/aintdos.h
+%{_includedir}/allegro/platform/aintlnx.h
+%{_includedir}/allegro/platform/aintmac.h
+%{_includedir}/allegro/platform/aintosx.h
+%{_includedir}/allegro/platform/aintpsp.h
+%{_includedir}/allegro/platform/aintqnx.h
+%{_includedir}/allegro/platform/aintunix.h
+%{_includedir}/allegro/platform/aintwin.h
+%{_includedir}/allegro/platform/al386gcc.h
+%{_includedir}/allegro/platform/al386vc.h
+%{_includedir}/allegro/platform/al386wat.h
+%{_includedir}/allegro/platform/albcc32.h
+%{_includedir}/allegro/platform/albecfg.h
+%{_includedir}/allegro/platform/albeos.h
+%{_includedir}/allegro/platform/aldjgpp.h
+%{_includedir}/allegro/platform/aldmc.h
+%{_includedir}/allegro/platform/aldos.h
+%{_includedir}/allegro/platform/almac.h
+%{_includedir}/allegro/platform/almaccfg.h
+%{_includedir}/allegro/platform/almngw32.h
+%{_includedir}/allegro/platform/almsvc.h
+%{_includedir}/allegro/platform/alosx.h
+%{_includedir}/allegro/platform/alosxcfg.h
+%{_includedir}/allegro/platform/alplatf.h
+%{_includedir}/allegro/platform/alpsp.h
+%{_includedir}/allegro/platform/alpspcfg.h
+%{_includedir}/allegro/platform/alqnx.h
+%{_includedir}/allegro/platform/alqnxcfg.h
+%{_includedir}/allegro/platform/alucfg.h
+%{_includedir}/allegro/platform/alunix.h
+%{_includedir}/allegro/platform/alunixac.h
+%{_includedir}/allegro/platform/alwatcom.h
+%{_includedir}/allegro/platform/alwin.h
+%{_includedir}/allegro/platform/astdint.h
+%{_includedir}/allegro/platform/macdef.h
+%{_includedir}/allegro/quat.h
+%{_includedir}/allegro/rle.h
+%{_includedir}/allegro/sound.h
+%{_includedir}/allegro/stream.h
+%{_includedir}/allegro/system.h
+%{_includedir}/allegro/text.h
+%{_includedir}/allegro/timer.h
+%{_includedir}/allegro/unicode.h
+%{_includedir}/jpgalleg.h
 
 %changelog
+* Thu Jun 23 2011 Brandon McCaig <bamccaig@gmail.com> 4.4.2-1
+- Update to 4.4.2.
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.2.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
@@ -415,7 +374,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Mar 13 2006 Hans de Goede <j.w.r.degoede@hhs.nl> 4.2.0-11
 - really, _really_ fix asm stretch code on i386 with NX processors, long
-  story see bugzilla bug 185214 .
+  story see bugzilla bug 185214 .
 
 * Sat Mar 11 2006 Hans de Goede <j.w.r.degoede@hhs.nl> 4.2.0-10
 - really fix asm stretch code on i386 with NX processors, on OpenBSD mprotects
@@ -552,3 +511,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Sep 27 2000 Osvaldo Santana Neto <osvaldo@conectiva.com>
 - updated to 3.9.33
+
