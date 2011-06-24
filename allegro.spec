@@ -178,14 +178,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/liballeg.so
 %{_libdir}/liballeg.so.4.4
 %{_libdir}/liballeg.so.%{version}
-%{_libdir}/libjpgalleg.a
-%{_libdir}/libloadpng.a
-%{_libdir}/liblogg.a
-%{_libdir}/pkgconfig/allegro.pc
-%{_libdir}/pkgconfig/allegrogl.pc
-%{_libdir}/pkgconfig/jpgalleg.pc
-%{_libdir}/pkgconfig/loadpng.pc
-%{_libdir}/pkgconfig/logg.pc
 
 %files devel
 %{_bindir}/allegro-config
@@ -279,6 +271,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/loadpng.h
 %{_includedir}/logg.h
 %{_includedir}/xalleg.h
+%{_libdir}/libjpgalleg.a
+%{_libdir}/libloadpng.a
+%{_libdir}/liblogg.a
+%{_libdir}/pkgconfig/allegro.pc
+%{_libdir}/pkgconfig/allegrogl.pc
+%{_libdir}/pkgconfig/jpgalleg.pc
+%{_libdir}/pkgconfig/loadpng.pc
+%{_libdir}/pkgconfig/logg.pc
 
 %files tools
 %{_bindir}/colormap
@@ -293,7 +293,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/textconv
 
 %files gl
-%{_libdir}/liballeggl.a
 
 %files gl-devel
 %{_includedir}/alleggl.h
@@ -312,6 +311,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegrogl/alleggl_config.h
 %{_includedir}/allegrogl/gl_ext.h
 %{_includedir}/allegrogl/gl_header_detect.h
+%{_libdir}/liballeggl.a
 
 %changelog
 * Thu Jun 23 2011 Brandon McCaig <bamccaig@gmail.com> 4.4.2-1
