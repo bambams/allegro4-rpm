@@ -137,7 +137,7 @@ The %{name}-gl-devel package contains libraries and header files
 for developing applications that use %{name}-gl.
 
 %prep
-%setup -n allegro-%{version} -q
+%setup -n %{name}-%{version} -q
 
 %build
 mkdir build
