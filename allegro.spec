@@ -171,7 +171,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc build/docs/man/*.3
 %doc build/docs/info/allegro.info
 %doc build/docs/txt/*.txt
-%{_bindir}/allegro-config
 %{_libdir}/allegro/%{version}/modules.lst
 %{_libdir}/allegro/%{version}/alleg-alsadigi.so
 %{_libdir}/allegro/%{version}/alleg-alsamidi.so
@@ -189,6 +188,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/logg.pc
 
 %files devel
+%{_bindir}/allegro-config
 %{_includedir}/allegro.h
 %{_includedir}/allegro/3d.h
 %{_includedir}/allegro/3dmaths.h
