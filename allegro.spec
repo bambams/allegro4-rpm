@@ -126,6 +126,13 @@ cd build
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir %buildroot/%{_sysconfdir}
 
+# Remove raw build system installed documentation.
+rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
+		%buildroot/usr/doc/allegro-%{version}/CHANGES \
+		%buildroot/usr/doc/allegro-%{version}/THANKS \
+		%buildroot/usr/doc/allegro-%{version}/*.txt \
+		%buildroot/usr/info/allegro.info
+
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
@@ -134,13 +141,16 @@ mkdir %buildroot/%{_sysconfdir}
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc AUTHORS CHANGES THANKS abi.txt addons.txt ahack.txt allegro.txt api.txt const.txt dat.txt dat2c.txt dat2s.txt datafile.txt faq.txt grabber.txt help.txt license.txt makedoc.txt mistakes.txt packfile.txt readme.txt
+%doc build/docs/AUTHORS build/docs/CHANGES build/docs/THANKS
+%doc build/docs/html/*.html
+%doc build/docs/man/*.3
+%doc build/docs/info/allegro.info
+%doc build/docs/txt/*.txt
 %{_bindir}/allegro-config
-#%{_infodir}/allegro.info.gz
-%{_libdir}/allegro/4.4.2/modules.lst
+%{_libdir}/allegro/%{version}/modules.lst
 %{_libdir}/liballeg.so
 %{_libdir}/liballeg.so.4.4
-%{_libdir}/liballeg.so.4.4.2
+%{_libdir}/liballeg.so.%{version}
 %{_libdir}/libjpgalleg.a
 %{_libdir}/pkgconfig/allegro.pc
 %{_libdir}/pkgconfig/allegrogl.pc
