@@ -111,6 +111,31 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček obsahuje přídavné nástroje,
 které jsou užitečné pro vývoj Allegro programů.
 
+%package gl
+Summary:        OpenGL support library for Allegro
+Group:          System Environment/Libraries
+Requires:		%{name} = %{version}-%{release}
+
+%description    gl
+AllegroGL is an Allegro add-on that allows you to use OpenGL alongside
+Allegro.  You use OpenGL for your rendering to the screen, and Allegro for
+miscellaneous tasks like gathering input, doing timers, getting
+cross-platform portability, loading data, and drawing your textures. So
+this library fills the same hole that things like glut do.
+
+AllegroGL also automatically exposes most, if not all, OpenGL extensions
+available to user programs. This means you no longer have to manually load
+them; extension management is already done for you.
+
+%package gl-devel
+Summary:        Development files for %{name}
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description    gl-devel
+The %{name}-gl-devel package contains libraries and header files
+for developing applications that use %{name}-gl.
+
 %prep
 %setup -n allegro-%{version} -q
 
@@ -148,27 +173,20 @@ rm -rf $RPM_BUILD_ROOT
 %doc build/docs/txt/*.txt
 %{_bindir}/allegro-config
 %{_libdir}/allegro/%{version}/modules.lst
+%{_libdir}/allegro/%{version}/alleg-alsadigi.so
+%{_libdir}/allegro/%{version}/alleg-alsamidi.so
+%{_libdir}/allegro/%{version}/alleg-jack.so
 %{_libdir}/liballeg.so
 %{_libdir}/liballeg.so.4.4
 %{_libdir}/liballeg.so.%{version}
 %{_libdir}/libjpgalleg.a
+%{_libdir}/libloadpng.a
+%{_libdir}/liblogg.a
 %{_libdir}/pkgconfig/allegro.pc
 %{_libdir}/pkgconfig/allegrogl.pc
 %{_libdir}/pkgconfig/jpgalleg.pc
 %{_libdir}/pkgconfig/loadpng.pc
 %{_libdir}/pkgconfig/logg.pc
-
-%files tools
-%{_bindir}/colormap
-%{_bindir}/dat
-%{_bindir}/dat2c
-%{_bindir}/dat2s
-%{_bindir}/exedat
-%{_bindir}/grabber
-%{_bindir}/pack
-%{_bindir}/pat2dat
-%{_bindir}/rgbmap
-%{_bindir}/textconv
 
 %files devel
 %{_includedir}/allegro.h
@@ -258,6 +276,42 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegro/timer.h
 %{_includedir}/allegro/unicode.h
 %{_includedir}/jpgalleg.h
+%{_includedir}/loadpng.h
+%{_includedir}/logg.h
+%{_includedir}/xalleg.h
+
+%files tools
+%{_bindir}/colormap
+%{_bindir}/dat
+%{_bindir}/dat2c
+%{_bindir}/dat2s
+%{_bindir}/exedat
+%{_bindir}/grabber
+%{_bindir}/pack
+%{_bindir}/pat2dat
+%{_bindir}/rgbmap
+%{_bindir}/textconv
+
+%files gl
+%{_libdir}/liballeggl.a
+
+%files gl-devel
+%{_includedir}/alleggl.h
+%{_includedir}/allegrogl/GLext/gl_ext_alias.h
+%{_includedir}/allegrogl/GLext/gl_ext_api.h
+%{_includedir}/allegrogl/GLext/gl_ext_defs.h
+%{_includedir}/allegrogl/GLext/gl_ext_list.h
+%{_includedir}/allegrogl/GLext/glx_ext_alias.h
+%{_includedir}/allegrogl/GLext/glx_ext_api.h
+%{_includedir}/allegrogl/GLext/glx_ext_defs.h
+%{_includedir}/allegrogl/GLext/glx_ext_list.h
+%{_includedir}/allegrogl/GLext/wgl_ext_alias.h
+%{_includedir}/allegrogl/GLext/wgl_ext_api.h
+%{_includedir}/allegrogl/GLext/wgl_ext_defs.h
+%{_includedir}/allegrogl/GLext/wgl_ext_list.h
+%{_includedir}/allegrogl/alleggl_config.h
+%{_includedir}/allegrogl/gl_ext.h
+%{_includedir}/allegrogl/gl_header_detect.h
 
 %changelog
 * Thu Jun 23 2011 Brandon McCaig <bamccaig@gmail.com> 4.4.2-1
