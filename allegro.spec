@@ -1,4 +1,4 @@
-# vim: noexpandtab textwidth=74
+# vim: expandtab textwidth=74
 Name:           allegro
 Version:        4.4.2
 Release:        1%{?dist}
@@ -36,7 +36,7 @@ videogiochi ed in altri tipi di programmazione multimediale.
 Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování.
 
-%package devel
+%package        devel
 Summary:        A game programming library
 Summary(es):    Una libreria de programacion de juegos
 Summary(fr):    Une librairie de programmation de jeux
@@ -74,7 +74,7 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček je je potřebný
 k sestavení programů napsaných v Allegru.
 
-%package tools
+%package        tools
 Summary:        Extra tools for the Allegro programming library
 Summary(es):    Herramientas adicionales para la librería de programación Allegro
 Summary(fr):    Outils supplémentaires pour la librairie de programmation Allegro
@@ -111,7 +111,7 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček obsahuje přídavné nástroje,
 které jsou užitečné pro vývoj Allegro programů.
 
-%package gl
+%package        gl
 Summary:        OpenGL support library for Allegro
 Group:          System Environment/Libraries
 Requires:		%{name} = %{version}-%{release}
@@ -127,7 +127,7 @@ AllegroGL also automatically exposes most, if not all, OpenGL extensions
 available to user programs. This means you no longer have to manually load
 them; extension management is already done for you.
 
-%package gl-devel
+%package        gl-devel
 Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
@@ -153,10 +153,10 @@ mkdir %buildroot/%{_sysconfdir}
 
 # Remove raw build system installed documentation.
 rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
-		%buildroot/usr/doc/allegro-%{version}/CHANGES \
-		%buildroot/usr/doc/allegro-%{version}/THANKS \
-		%buildroot/usr/doc/allegro-%{version}/*.txt \
-		%buildroot/usr/info/allegro.info
+        %buildroot/usr/doc/allegro-%{version}/CHANGES \
+        %buildroot/usr/doc/allegro-%{version}/THANKS \
+        %buildroot/usr/doc/allegro-%{version}/*.txt \
+        %buildroot/usr/info/allegro.info
 
 %post -p /sbin/ldconfig
 
