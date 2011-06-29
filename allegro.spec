@@ -42,7 +42,7 @@ Summary(es):    Una libreria de programacion de juegos
 Summary(fr):    Une librairie de programmation de jeux
 Summary(it):    Una libreria per la programmazione di videogiochi
 Summary(cs):    Knihovna pro programování her
-Group:          Development/Libraries
+Group:          System Environment/Libraries
 Provides:       %{name}-static = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}, xorg-x11-proto-devel
 Requires:       libX11-devel, libXcursor-devel
@@ -129,7 +129,7 @@ them; extension management is already done for you.
 
 %package        gl-devel
 Summary:        Development files for %{name}
-Group:          Development/Libraries
+Group:          System Environment/Libraries
 Requires:       %{name} = %{version}-%{release}
 
 %description    gl-devel
