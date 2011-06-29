@@ -111,12 +111,12 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček obsahuje přídavné nástroje,
 které jsou užitečné pro vývoj Allegro programů.
 
-%package        gl
+%package        addon-allegrogl
 Summary:        OpenGL support library for Allegro
 Group:          System Environment/Libraries
 Requires:		%{name} = %{version}-%{release}
 
-%description    gl
+%description    addon-allegrogl
 AllegroGL is an Allegro add-on that allows you to use OpenGL alongside
 Allegro.  You use OpenGL for your rendering to the screen, and Allegro for
 miscellaneous tasks like gathering input, doing timers, getting
@@ -127,12 +127,12 @@ AllegroGL also automatically exposes most, if not all, OpenGL extensions
 available to user programs. This means you no longer have to manually load
 them; extension management is already done for you.
 
-%package        gl-devel
-Summary:        Development files for %{name}
+%package        addon-allegrogl-devel
+Summary:        Development files for %{name}-addon-allegrogl
 Group:          System Environment/Libraries
 Requires:       %{name} = %{version}-%{release}
 
-%description    gl-devel
+%description    addon-allegrogl-devel
 The %{name}-gl-devel package contains libraries and header files
 for developing applications that use %{name}-gl.
 
@@ -292,9 +292,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rgbmap
 %{_bindir}/textconv
 
-%files gl
+%files addon-allegrogl
 
-%files gl-devel
+%files addon-allegrogl-devel
 %{_includedir}/alleggl.h
 %{_includedir}/allegrogl/GLext/gl_ext_alias.h
 %{_includedir}/allegrogl/GLext/gl_ext_api.h
