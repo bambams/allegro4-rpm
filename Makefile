@@ -1,4 +1,4 @@
-RPM_BUILD_ROOT=${HOME}/rpm
+RPM_BUILD_ROOT=${HOME}/rpmbuild
 
 .PHONY: all check
 
