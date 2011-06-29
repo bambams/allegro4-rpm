@@ -114,7 +114,8 @@ které jsou užitečné pro vývoj Allegro programů.
 %package        addon-allegrogl
 Summary:        OpenGL support library for Allegro
 Group:          System Environment/Libraries
-Requires:		%{name} = %{version}-%{release}
+License:        zlib
+Requires:       %{name} = %{version}-%{release}
 
 %description    addon-allegrogl
 AllegroGL is an Allegro add-on that allows you to use OpenGL alongside
@@ -130,11 +131,72 @@ them; extension management is already done for you.
 %package        addon-allegrogl-devel
 Summary:        Development files for %{name}-addon-allegrogl
 Group:          System Environment/Libraries
-Requires:       %{name} = %{version}-%{release}
+License:        zlib
+Requires:       %{name}-addon-allegrogl = %{version}-%{release}
+Requires:       %{name}-devel = %{version}-%{release}
 
 %description    addon-allegrogl-devel
-The %{name}-gl-devel package contains libraries and header files
-for developing applications that use %{name}-gl.
+This package contains development files for developing applications that
+use AllegroGL.
+
+%package        addon-jpgalleg
+Summary:        JPG support library for Allegro
+Group:          System Environment/Libraries
+License:        zlib
+Requires:       %{name} = %{version}-%{release}
+
+%description    addon-jpgalleg
+jpgalleg is an Allegro add-on that allows you to load/save JPG images with
+standard Allegro image handling functions.
+
+%package        addon-jpgalleg-devel
+Summary:        Development files for %{name}-addon-jpgalleg
+Group:          System Environment/Libraries
+License:        zlib
+Requires:       %{name}-addon-jpgalleg = %{version}-%{release}
+Requires:       %{name}-devel = %{version}-%{release}
+
+%description    addon-jpgalleg-devel
+This package contains files used to develop Allegro applications that use
+the JPG image format.
+
+%package        addon-loadpng
+Summary:        PNG support library for Allegro
+Group:          System Environment/Libraries
+License:        Public Domain
+Requires:       %{name} = %{version}-%{release}
+
+%description    addon-loadpng
+loadpng is an Allegro add-on that adds PNG image format support.
+
+%package        addon-loadpng-devel
+Summary:        Development files for %{name}-addon-loadpng
+Group:          System Environment/Libraries
+License:        Public Domain
+Requires:       %{name}-addon-loadpng = %{version}-%{release}
+Requires:       %{name}-devel = %{version}-%{release}
+
+%description    addon-loadpng-devel
+This package contains files used to develop Allegro applications that use
+the PNG image format.
+
+%package        addon-logg
+Summary:        Ogg Vorbis support library for Allegro
+Group:          System Environment/Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description    addon-logg
+logg is an Allegro add-on that adds Ogg Vorbis audio format support.
+
+%package        addon-logg-devel
+Summary:        Development files for %{name}-addon-logg
+Group:          System Environment/Libraries
+Requires:       %{name}-addon-logg = %{version}-%{release}
+Requires:       %{name}-devel = %{version}-%{release}
+
+%description    addon-logg-devel
+This package contains files used to develop Allegro applications that use
+the Ogg Vorbis audio format.
 
 %prep
 %setup -n %{name}-%{version} -q
@@ -267,18 +329,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegro/text.h
 %{_includedir}/allegro/timer.h
 %{_includedir}/allegro/unicode.h
-%{_includedir}/jpgalleg.h
-%{_includedir}/loadpng.h
-%{_includedir}/logg.h
 %{_includedir}/xalleg.h
-%{_libdir}/libjpgalleg.a
-%{_libdir}/libloadpng.a
-%{_libdir}/liblogg.a
 %{_libdir}/pkgconfig/allegro.pc
-%{_libdir}/pkgconfig/allegrogl.pc
-%{_libdir}/pkgconfig/jpgalleg.pc
-%{_libdir}/pkgconfig/loadpng.pc
-%{_libdir}/pkgconfig/logg.pc
 
 %files tools
 %{_bindir}/colormap
@@ -293,6 +345,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/textconv
 
 %files addon-allegrogl
+%{_libdir}/liballeggl.a
 
 %files addon-allegrogl-devel
 %{_includedir}/alleggl.h
@@ -311,7 +364,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegrogl/alleggl_config.h
 %{_includedir}/allegrogl/gl_ext.h
 %{_includedir}/allegrogl/gl_header_detect.h
-%{_libdir}/liballeggl.a
+%{_libdir}/pkgconfig/allegrogl.pc
+
+%files addon-jpgalleg
+%{_libdir}/libjpgalleg.a
+
+%files addon-jpgalleg-devel
+%{_includedir}/jpgalleg.h
+%{_libdir}/pkgconfig/jpgalleg.pc
+
+%files addon-loadpng
+%{_libdir}/libloadpng.a
+
+%files addon-loadpng-devel
+%{_includedir}/loadpng.h
+%{_libdir}/pkgconfig/loadpng.pc
+
+%files addon-logg
+%{_libdir}/liblogg.a
+
+%files addon-logg-devel
+%{_includedir}/logg.h
+%{_libdir}/pkgconfig/logg.pc
 
 %changelog
 * Thu Jun 23 2011 Brandon McCaig <bamccaig@gmail.com> 4.4.2-1
