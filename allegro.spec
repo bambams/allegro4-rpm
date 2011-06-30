@@ -206,6 +206,16 @@ mkdir build
 cd build
 %cmake ..
 make %{?_smp_mflags}
+for f in docs/AUTHORS docs/CHANGES docs/THANKS \
+        docs/info/*.info docs/txt/*.txt docs/man/get_camera_matrix.3; do
+    dirname=$(dirname "$f");
+    basename=$(basename "$f");
+    tmppath="${dirname}/${basename}.tmp";
+    echo pwd=$(pwd);
+    ls -Rla
+    iconv -f 'iso-8859-1' -t 'utf-8' "$f" > "$tmppath";
+    mv "$tmppath" "$f";
+done
 
 %install
 rm -rf $RPM_BUILD_ROOT
