@@ -222,6 +222,7 @@ rm -rf $RPM_BUILD_ROOT
 cd build
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir %buildroot/%{_sysconfdir}
+mv ../allegro.cfg %buildroot/%{_sysconfdir}/allegrorc
 
 # Remove raw build system installed documentation.
 rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
@@ -238,6 +239,7 @@ rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%config(noreplace) %{_sysconfdir}/allegrorc
 %doc build/docs/AUTHORS build/docs/CHANGES build/docs/THANKS
 %doc build/docs/html/*.html
 %doc build/docs/man/*.3
