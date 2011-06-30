@@ -239,6 +239,7 @@ rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/allegrorc
 %doc build/docs/AUTHORS build/docs/CHANGES build/docs/THANKS
 %doc build/docs/html/*.html
@@ -254,6 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/liballeg.so.%{version}
 
 %files devel
+%defattr(-,root,root,-)
 %{_bindir}/allegro-config
 %{_includedir}/allegro.h
 %{_includedir}/allegro/3d.h
@@ -345,6 +347,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/allegro.pc
 
 %files tools
+%defattr(-,root,root,-)
 %{_bindir}/colormap
 %{_bindir}/dat
 %{_bindir}/dat2c
@@ -357,9 +360,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/textconv
 
 %files addon-allegrogl
+%defattr(-,root,root,-)
 %{_libdir}/liballeggl.a
 
 %files addon-allegrogl-devel
+%defattr(-,root,root,-)
 %{_includedir}/alleggl.h
 %{_includedir}/allegrogl/GLext/gl_ext_alias.h
 %{_includedir}/allegrogl/GLext/gl_ext_api.h
@@ -379,23 +384,29 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/allegrogl.pc
 
 %files addon-jpgalleg
+%defattr(-,root,root,-)
 %{_libdir}/libjpgalleg.a
 
 %files addon-jpgalleg-devel
+%defattr(-,root,root,-)
 %{_includedir}/jpgalleg.h
 %{_libdir}/pkgconfig/jpgalleg.pc
 
 %files addon-loadpng
+%defattr(-,root,root,-)
 %{_libdir}/libloadpng.a
 
 %files addon-loadpng-devel
+%defattr(-,root,root,-)
 %{_includedir}/loadpng.h
 %{_libdir}/pkgconfig/loadpng.pc
 
 %files addon-logg
+%defattr(-,root,root,-)
 %{_libdir}/liblogg.a
 
 %files addon-logg-devel
+%defattr(-,root,root,-)
 %{_includedir}/logg.h
 %{_libdir}/pkgconfig/logg.pc
 
