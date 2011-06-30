@@ -201,6 +201,9 @@ the Ogg Vorbis audio format.
 %prep
 %setup -n %{name}-%{version} -q
 
+# Remove Windows file->program mappings and enable the defaults for Linux.
+sed -i -e '675,686d' -e '687,693s/^# //g' allegro.cfg
+
 %build
 mkdir build
 cd build
