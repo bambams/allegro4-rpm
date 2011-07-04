@@ -111,22 +111,22 @@ Allegro je multiplatformní knihovna pro počítačové hry a jiné
 typy multimediálního programování. Tento balíček obsahuje přídavné nástroje,
 které jsou užitečné pro vývoj Allegro programů.
 
-%package        addon-allegrogl
-Summary:        OpenGL support library for Allegro
-Group:          System Environment/Libraries
-License:        zlib
-Requires:       %{name} = %{version}-%{release}
-
-%description    addon-allegrogl
-AllegroGL is an Allegro add-on that allows you to use OpenGL alongside
-Allegro.  You use OpenGL for your rendering to the screen, and Allegro for
-miscellaneous tasks like gathering input, doing timers, getting
-cross-platform portability, loading data, and drawing your textures. So
-this library fills the same hole that things like glut do.
-
-AllegroGL also automatically exposes most, if not all, OpenGL extensions
-available to user programs. This means you no longer have to manually load
-them; extension management is already done for you.
+#%package        addon-allegrogl
+#Summary:        OpenGL support library for Allegro
+#Group:          System Environment/Libraries
+#License:        zlib
+#Requires:       %{name} = %{version}-%{release}
+#
+#%description    addon-allegrogl
+#AllegroGL is an Allegro add-on that allows you to use OpenGL alongside
+#Allegro.  You use OpenGL for your rendering to the screen, and Allegro for
+#miscellaneous tasks like gathering input, doing timers, getting
+#cross-platform portability, loading data, and drawing your textures. So
+#this library fills the same hole that things like glut do.
+#
+#AllegroGL also automatically exposes most, if not all, OpenGL extensions
+#available to user programs. This means you no longer have to manually load
+#them; extension management is already done for you.
 
 %package        addon-allegrogl-devel
 Summary:        Development files for %{name}-addon-allegrogl
@@ -139,15 +139,15 @@ Requires:       %{name}-devel = %{version}-%{release}
 This package contains development files for developing applications that
 use AllegroGL.
 
-%package        addon-jpgalleg
-Summary:        JPG support library for Allegro
-Group:          System Environment/Libraries
-License:        zlib
-Requires:       %{name} = %{version}-%{release}
-
-%description    addon-jpgalleg
-jpgalleg is an Allegro add-on that allows you to load/save JPG images with
-standard Allegro image handling functions.
+#%package        addon-jpgalleg
+#Summary:        JPG support library for Allegro
+#Group:          System Environment/Libraries
+#License:        zlib
+#Requires:       %{name} = %{version}-%{release}
+#
+#%description    addon-jpgalleg
+#jpgalleg is an Allegro add-on that allows you to load/save JPG images with
+#standard Allegro image handling functions.
 
 %package        addon-jpgalleg-devel
 Summary:        Development files for %{name}-addon-jpgalleg
@@ -160,14 +160,14 @@ Requires:       %{name}-devel = %{version}-%{release}
 This package contains files used to develop Allegro applications that use
 the JPG image format.
 
-%package        addon-loadpng
-Summary:        PNG support library for Allegro
-Group:          System Environment/Libraries
-License:        Public Domain
-Requires:       %{name} = %{version}-%{release}
-
-%description    addon-loadpng
-loadpng is an Allegro add-on that adds PNG image format support.
+#%package        addon-loadpng
+#Summary:        PNG support library for Allegro
+#Group:          System Environment/Libraries
+#License:        Public Domain
+#Requires:       %{name} = %{version}-%{release}
+#
+#%description    addon-loadpng
+#loadpng is an Allegro add-on that adds PNG image format support.
 
 %package        addon-loadpng-devel
 Summary:        Development files for %{name}-addon-loadpng
@@ -180,13 +180,13 @@ Requires:       %{name}-devel = %{version}-%{release}
 This package contains files used to develop Allegro applications that use
 the PNG image format.
 
-%package        addon-logg
-Summary:        Ogg Vorbis support library for Allegro
-Group:          System Environment/Libraries
-Requires:       %{name} = %{version}-%{release}
-
-%description    addon-logg
-logg is an Allegro add-on that adds Ogg Vorbis audio format support.
+#%package        addon-logg
+#Summary:        Ogg Vorbis support library for Allegro
+#Group:          System Environment/Libraries
+#Requires:       %{name} = %{version}-%{release}
+#
+#%description    addon-logg
+#logg is an Allegro add-on that adds Ogg Vorbis audio format support.
 
 %package        addon-logg-devel
 Summary:        Development files for %{name}-addon-logg
@@ -251,10 +251,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc build/docs/info/allegro.info
 %doc build/docs/txt/*.txt
 %{_libdir}/allegro/%{version}/modules.lst
-%{_libdir}/allegro/%{version}/alleg-alsadigi.so
-%{_libdir}/allegro/%{version}/alleg-alsamidi.so
-%{_libdir}/allegro/%{version}/alleg-jack.so
-%{_libdir}/liballeg.so
 %{_libdir}/liballeg.so.4.4
 %{_libdir}/liballeg.so.%{version}
 
@@ -348,6 +344,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegro/timer.h
 %{_includedir}/allegro/unicode.h
 %{_includedir}/xalleg.h
+%{_libdir}/allegro/%{version}/alleg-alsadigi.so
+%{_libdir}/allegro/%{version}/alleg-alsamidi.so
+%{_libdir}/allegro/%{version}/alleg-jack.so
+%{_libdir}/liballeg.so
 %{_libdir}/pkgconfig/allegro.pc
 
 %files tools
@@ -364,9 +364,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/textconv
 %{_bindir}/xfixicon.sh
 
-%files addon-allegrogl
-%defattr(-,root,root,-)
-%{_libdir}/liballeggl.a
+#%files addon-allegrogl
+#%defattr(-,root,root,-)
+#%{_libdir}/liballeggl.a
 
 %files addon-allegrogl-devel
 %defattr(-,root,root,-)
@@ -386,33 +386,37 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/allegrogl/alleggl_config.h
 %{_includedir}/allegrogl/gl_ext.h
 %{_includedir}/allegrogl/gl_header_detect.h
+%{_libdir}/liballeggl.a
 %{_libdir}/pkgconfig/allegrogl.pc
 
-%files addon-jpgalleg
-%defattr(-,root,root,-)
-%{_libdir}/libjpgalleg.a
+#%files addon-jpgalleg
+#%defattr(-,root,root,-)
+#%{_libdir}/libjpgalleg.a
 
 %files addon-jpgalleg-devel
 %defattr(-,root,root,-)
 %{_includedir}/jpgalleg.h
+%{_libdir}/libjpgalleg.a
 %{_libdir}/pkgconfig/jpgalleg.pc
 
-%files addon-loadpng
-%defattr(-,root,root,-)
-%{_libdir}/libloadpng.a
+#%files addon-loadpng
+#%defattr(-,root,root,-)
+#%{_libdir}/libloadpng.a
 
 %files addon-loadpng-devel
 %defattr(-,root,root,-)
 %{_includedir}/loadpng.h
+%{_libdir}/libloadpng.a
 %{_libdir}/pkgconfig/loadpng.pc
 
-%files addon-logg
-%defattr(-,root,root,-)
-%{_libdir}/liblogg.a
+#%files addon-logg
+#%defattr(-,root,root,-)
+#%{_libdir}/liblogg.a
 
 %files addon-logg-devel
 %defattr(-,root,root,-)
 %{_includedir}/logg.h
+%{_libdir}/liblogg.a
 %{_libdir}/pkgconfig/logg.pc
 
 %changelog
