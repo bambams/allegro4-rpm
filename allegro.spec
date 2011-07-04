@@ -216,8 +216,6 @@ for f in docs/AUTHORS docs/CHANGES docs/THANKS \
     dirname=$(dirname "$f");
     basename=$(basename "$f");
     tmppath="${dirname}/${basename}.tmp";
-    echo pwd=$(pwd);
-    ls -Rla
     iconv -f 'iso-8859-1' -t 'utf-8' "$f" > "$tmppath";
     mv "$tmppath" "$f";
 done
