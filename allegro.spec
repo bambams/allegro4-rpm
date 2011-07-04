@@ -228,6 +228,7 @@ cd build
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir %buildroot/%{_sysconfdir}
 mv ../allegro.cfg %buildroot/%{_sysconfdir}/allegrorc
+install -m 755 ../tools/x11/xfixicon.sh %buildroot/%{_bindir}/
 
 # Remove raw build system installed documentation.
 rm %buildroot/usr/doc/allegro-%{version}/AUTHORS \
@@ -363,6 +364,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/pat2dat
 %{_bindir}/rgbmap
 %{_bindir}/textconv
+%{_bindir}/xfixicon.sh
 
 %files addon-allegrogl
 %defattr(-,root,root,-)
