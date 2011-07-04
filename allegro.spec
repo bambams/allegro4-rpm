@@ -209,6 +209,8 @@ mkdir build
 cd build
 %cmake ..
 make %{?_smp_mflags}
+
+# Converting text documentation to UTF-8 encoding.
 for f in docs/AUTHORS docs/CHANGES docs/THANKS \
         docs/info/*.info docs/txt/*.txt docs/man/get_camera_matrix.3; do
     dirname=$(dirname "$f");
